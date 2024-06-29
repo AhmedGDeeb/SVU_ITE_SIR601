@@ -105,15 +105,24 @@ label {
 }
 
 /* error message */
-.alert {
+.alert-error {
     padding: 20px;
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
+    /* Red */
     color: white;
     margin: 15px;
-  }
-  
-  /* The close button */
-  .closebtn {
+}
+
+.alert-success {
+    padding: 20px;
+    background-color: #36f485;
+    /* Red */
+    color: white;
+    margin: 15px;
+}
+
+/* The close button */
+.closebtn {
     margin-left: 15px;
     color: white;
     font-weight: bold;
@@ -122,9 +131,9 @@ label {
     line-height: 20px;
     cursor: pointer;
     transition: 0.3s;
-  }
-  
-  /* When moving the mouse over the close button */
-  .closebtn:hover {
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
     color: black;
-  }
+}

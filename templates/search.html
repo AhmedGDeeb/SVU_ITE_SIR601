@@ -11,6 +11,36 @@
     <p>
       Search Page
     </p>
+
+    <!-- error message -->
+    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+    {% if errors %}
+    <div class="alert-error"
+         role="alert">
+         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <ul>
+            {%- for msg in errors %}
+            <li>{{ msg }}</li>
+            {% endfor -%}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+    <div class="alert-success"
+         role="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <ul>
+            {%- for msg in messages %}
+            <li>{{ msg }}</li>
+            {% endfor -%}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
 	<script src="{{ url_for('static', filename='js/search.js') }}"></script>
   </body>
 </html>

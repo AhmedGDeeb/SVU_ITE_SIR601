@@ -1,0 +1,14 @@
+# robots.txt 
+# disallow all agents
+User-agent: *
+Disallow: /
+
+# allow bingbot
+User-agent: bingbot
+allow: /
+
+# allow googlebot
+User-agent: googlebot
+allow: /
+
+

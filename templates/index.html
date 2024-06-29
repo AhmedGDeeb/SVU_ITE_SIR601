@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="container">
-      <form method="POST" enctype="multipart/form-data" action="{{ url_for('search') }}">
+      <form method="POST" enctype="multipart/form-data" action="{{ url_for('config') }}">
           <!-- files input -->
           <div id="files-div">
               <label for="files-input">Choose Corpus files:</label>
@@ -50,13 +50,34 @@
           </div>
       </form>
       <!-- error message -->
-      {% if error_message != "" %}
-      <!-- alert -->
-      <div class="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        {{ error_message }}
+      {% with errors = get_flashed_messages(category_filter=["error"]) %}
+      {% if errors %}
+      <div class="alert alert-danger alert-dismissible fade show"
+           role="alert">
+           <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <ul>
+              {%- for msg in errors %}
+              <li>{{ msg }}</li>
+              {% endfor -%}
+          </ul>
       </div>
-    {% endif %}
+      {% endif %}
+      {% endwith %}
+
+      {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% if messages %}
+      <div class="alert"
+           role="alert">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <ul>
+              {%- for msg in messages %}
+              <li>{{ msg }}</li>
+              {% endfor -%}
+          </ul>
+      </div>
+      {% endif %}
+      {% endwith %}
+      
   </div>
 	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
