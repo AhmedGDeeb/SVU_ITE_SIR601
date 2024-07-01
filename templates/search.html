@@ -1,46 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
-    <p>
-      Search Page
-    </p>
+<html>
 
-    <!-- error message -->
-    {% with errors = get_flashed_messages(category_filter=["error"]) %}
-    {% if errors %}
-    <div class="alert-error"
-         role="alert">
-         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <ul>
-            {%- for msg in errors %}
-            <li>{{ msg }}</li>
-            {% endfor -%}
-        </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SVU ITE SIR601 HW">
+  <title>{{ search_request }}</title>
+  <link rel="shortcut icon" type="image/ico" href="images/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  <!-- ajax library -->
+  <script src={{ url_for('static', filename='js/jquery.js') }}></script>
+</head>
+
+<body style="min-height: 400px;">
+  <div id="header">
+    <div id="topbar" style="display: flex; justify-content: center;">
+      <form id="searchbar" method="POST" enctype="multipart/form-data" action="{{ url_for('search') }}">
+        <input id="searchbartext" name="search-request" type="text" value="{{ search_request }}" />
+        <button id="searchbarbutton">
+          <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+              d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+            </path>
+          </svg>
+        </button>
+      </form>
     </div>
-    {% endif %}
-    {% endwith %}
 
-    {% with messages = get_flashed_messages(category_filter=["success"]) %}
-    {% if messages %}
-    <div class="alert-success"
-         role="alert">
-        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-        <ul>
-            {%- for msg in messages %}
-            <li>{{ msg }}</li>
-            {% endfor -%}
-        </ul>
+    <div id="optionsbar">
+      <ul id="optionsmenu1">
+        <li id="optionsmenuactive">All results</li>
+      </ul>
     </div>
-    {% endif %}
-    {% endwith %}
+  </div>
+  <div id="searchresultsarea">
+    <div style="width: 50%;">
+      <p id="searchresultsnumber">About {{ total_results_count }} results in {{ search_time_sec}} nano seconds - Model: {{ search_model }}</p>
+      {% for result in search_results %}
+      <div class="searchresult">
+        <h2 id="{{ result['document_id'] }}" onclick="get_doc(event, '{{ result['document_id'] }}')">{{ result['title'] }}</h2>
+        <a>{{ result['document_id'][0:10] }}</a>
+        <p>{{ result['summary']|safe }}</p>
+        {% if result['rank'] != -1 %}<p>Rank: {{ result['rank'] }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    
+    <script>
+    const get_doc = (event, doc_id) => {
+        const search_query = document.getElementById("searchbartext").value
+        console.log("clicked");
+        $.ajax({
+            type: "POST",
+            url:"{{ url_for('doc') }}",
+            data: JSON.stringify({
+                "doc_id": doc_id,
+                "search_query" : search_query
+            }),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(result) {
+              document.getElementById("document-content").value = result["content"]
+            },
+            error: function() {
+              document.getElementById("document-content").value = "Error!!"
+            }
+        });
+    }
+    
 
-	<script src="{{ url_for('static', filename='js/search.js') }}"></script>
-  </body>
+  </script>
+
+    <div  style="width: 40%;">
+      <textarea id="document-content" style="width: 100%; height: 100%;"> </textarea>
+    </div>
+
+
+  </div>
+
+  <!-- error message -->
+  {% with errors = get_flashed_messages(category_filter=["error"]) %}
+  {% if errors %}
+  <div class="alert-error" role="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <ul>
+      {%- for msg in errors %}
+      <li>{{ msg }}</li>
+      {% endfor -%}
+    </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+
+  {% with messages = get_flashed_messages(category_filter=["success"]) %}
+  {% if messages %}
+  <div class="alert-success" role="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <ul>
+      {%- for msg in messages %}
+      <li>{{ msg }}</li>
+      {% endfor -%}
+    </ul>
+  </div>
+  {% endif %}
+  {% endwith %}
+  <div id="footer">
+    <ul id="footermenu">
+      Working group:
+      <li></li>
+      <li></li>
+      <li>Ahmad_152818 [Ahmad GHDeeb]</li>
+    </ul>
+  </div>
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+</body>
+
 </html>

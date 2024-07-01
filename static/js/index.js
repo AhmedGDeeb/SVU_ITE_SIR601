@@ -5,15 +5,17 @@ const filesInput = document.getElementById("files-input");
 filesInput.required = !useDefaultDbCheckbox.checked;
 const filesDiv = document.getElementById("files-div");
 filesDiv.hidden = useDefaultDbCheckbox.checked;
-const databasesSelectDiv = document.getElementById("database-select-div");
-databasesSelectDiv.hidden = !useDefaultDbCheckbox.checked;
+
+// const databasesSelectDiv = document.getElementById("database-select-div");
+// databasesSelectDiv.hidden = !useDefaultDbCheckbox.checked;
+
 useDefaultDbCheckbox.addEventListener("change", (e) => {
     const filesInput = document.getElementById("files-input");
     filesInput.required = !e.currentTarget.checked;
     const filesDiv = document.getElementById("files-div");
     filesDiv.hidden = e.currentTarget.checked;
-    const databasesSelectDiv = document.getElementById("database-select-div");
-    databasesSelectDiv.hidden = !e.currentTarget.checked;
+    // const databasesSelectDiv = document.getElementById("database-select-div");
+    // databasesSelectDiv.hidden = !e.currentTarget.checked;
 });
 
 // -------------------------------------------------------------------------

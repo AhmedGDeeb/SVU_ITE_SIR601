@@ -1,0 +1,11 @@
+# Continue:
+- apply:
+[X] run flask on pythonanywhere
+[X] get the tempaltes
+[ ] apply boolean model
+
+
+- theory study
+P71
+file:///C:/ITE_SIR601_HW/01_Books/Peter%20Ingwersen%20-%20Information%20Retrieval%20Interaction%20(1992).pdf
++ Report

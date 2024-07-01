@@ -1,84 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Marko Search | Search anything</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
-    <div class="container">
-      <form method="POST" enctype="multipart/form-data" action="{{ url_for('config') }}">
-          <!-- files input -->
-          <div id="files-div">
-              <label for="files-input">Choose Corpus files:</label>
-              <input id="files-input" type="file" name="files" multiple="" accept="{{ ALLOWED_EXTENSIONS }}" required>
-          </div>
-          <!-- db select -->
-          <div>
-              <input type="checkbox" id="use-default-db-checkbox" name="use_default_db">
-              <label for="use-default-db-checkbox">Use Database:</label>
-              <div id="database-select-div" hidden>
-                  <select name="database-path">
-                      {% for db in databases %}
-                      <option value="{{ db }}" {% if loop.last %}selected{% endif %}>{{ db }}</option>
-                      {% endfor %}
-                  </select>
-              </div>
-          </div>
-          <!-- language input -->
-          <div class="language-selection">
-              {% for language in SUPPORTED_LANGUAGES %}
-              <div style="display: flex; align-items: baseline;">
-                  <input id="{{ language['value'] }}" type="radio" name="language" value="{{ language['value'] }}" {% if loop.first %}checked{% endif %}>
-                  <label for="{{ language['value'] }}">{{ language['text'] }}</label>
-              </div>
-              {% endfor %}
-          </div>
-          <!-- model select -->
-          <div id="model-selection">
-              <label for="model">Select Model:</label>
-              <select id="model" name="model">
-                  {% for model in SUPPORTED_MODELS %}
-                      <option value="{{ model['value'] }}" {% if loop.first %}selected{% endif %}>{{ model['text'] }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-          <div class="submit-button">
-              <input type="submit" value="Submit">
-          </div>
-      </form>
-      <!-- error message -->
-      {% with errors = get_flashed_messages(category_filter=["error"]) %}
-      {% if errors %}
-      <div class="alert alert-danger alert-dismissible fade show"
-           role="alert">
-           <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-          <ul>
-              {%- for msg in errors %}
-              <li>{{ msg }}</li>
-              {% endfor -%}
-          </ul>
-      </div>
-      {% endif %}
-      {% endwith %}
 
-      {% with messages = get_flashed_messages(category_filter=["success"]) %}
-      {% if messages %}
-      <div class="alert"
-           role="alert">
-          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-          <ul>
-              {%- for msg in messages %}
-              <li>{{ msg }}</li>
-              {% endfor -%}
-          </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Marko Search | Search anything</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  <div class="container">
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('config') }}">
+      <!-- files input -->
+      <div id="files-div">
+        <label for="files-input">Choose Corpus files:</label>
+        <input id="files-input" type="file" name="files" multiple="" accept="{{ ALLOWED_EXTENSIONS }}" required>
       </div>
-      {% endif %}
-      {% endwith %}
-      
+      <!-- db select -->
+      <div>
+        <input type="checkbox" id="use-default-db-checkbox" name="use_default_db">
+        <label for="use-default-db-checkbox">Use Default Database</label>
+      </div>
+      <!-- language input -->
+      <div class="language-selection">
+        {% for language in SUPPORTED_LANGUAGES %}
+        <div style="display: flex; align-items: baseline;">
+          <input id="{{ language['value'] }}" type="radio" name="language" value="{{ language['value'] }}" {% if
+            loop.first %}checked{% endif %}>
+          <label for="{{ language['value'] }}">{{ language['text'] }}</label>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- model select -->
+      <div id="model-selection">
+        <label for="model">Select Model:</label>
+        <select id="model" name="model">
+          {% for model in SUPPORTED_MODELS %}
+          <option value="{{ model['value'] }}" {% if loop.first %}selected{% endif %}>{{ model['text'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="submit-button">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+    <!-- error message -->
+    {% with errors = get_flashed_messages(category_filter=["error"]) %}
+    {% if errors %}
+    <div class="alert-error" role="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <ul>
+        {%- for msg in errors %}
+        <li>{{ msg }}</li>
+        {% endfor -%}
+      </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+    <div class="alert-success" role="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+      <ul>
+        {%- for msg in messages %}
+        <li>{{ msg }}</li>
+        {% endfor -%}
+      </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+
   </div>
-	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
-  </body>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+
 </html>
